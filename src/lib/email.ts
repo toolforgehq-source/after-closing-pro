@@ -22,7 +22,7 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
   }
 
   await getResend().emails.send({
-    from: 'After Closing Pro <onboarding@resend.dev>',
+    from: 'After Closing Pro <support@afterclosingpro.com>',
     to,
     subject,
     html,
