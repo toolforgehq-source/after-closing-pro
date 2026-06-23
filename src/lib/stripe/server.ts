@@ -24,6 +24,9 @@ export const stripe = {
   get checkout() {
     return getStripe().checkout;
   },
+  get billingPortal() {
+    return getStripe().billingPortal;
+  },
 };
 
 export const PRICE_IDS = {

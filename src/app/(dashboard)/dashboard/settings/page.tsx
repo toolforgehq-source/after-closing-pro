@@ -8,15 +8,20 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Copy, Check } from 'lucide-react';
-import type { Company, Profile } from '@/lib/types';
+import type { Company, Profile, Subscription } from '@/lib/types';
+import { PLANS } from '@/lib/types';
+import Link from 'next/link';
+import { CreditCard } from 'lucide-react';
 
 export default function SettingsPage() {
   const [company, setCompany] = useState<Company | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -33,17 +38,36 @@ export default function SettingsPage() {
       setProfile(profileData as Profile | null);
 
       if (profileData?.company_id) {
-        const { data: companyData } = await supabase
-          .from('companies')
-          .select('*')
-          .eq('id', profileData.company_id)
-          .single();
-        setCompany(companyData as Company | null);
+        const [companyResult, subResult] = await Promise.all([
+          supabase
+            .from('companies')
+            .select('*')
+            .eq('id', profileData.company_id)
+            .single(),
+          supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('company_id', profileData.company_id)
+            .single(),
+        ]);
+        setCompany(companyResult.data as Company | null);
+        setSubscription(subResult.data as Subscription | null);
       }
       setLoading(false);
     }
     loadData();
   }, []);
+
+  async function handleManageBilling() {
+    setPortalLoading(true);
+    const res = await fetch('/api/billing/portal', { method: 'POST' });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      setPortalLoading(false);
+    }
+  }
 
   async function handleSaveCompany(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -114,6 +138,53 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Billing */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-gray-500" />
+            <h2 className="text-base font-semibold text-gray-900">Billing</h2>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {subscription && subscription.status === 'active' ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">
+                    {PLANS[subscription.plan as keyof typeof PLANS]?.name || subscription.plan} Plan
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    ${PLANS[subscription.plan as keyof typeof PLANS]?.price || '—'}/month
+                  </p>
+                </div>
+                <Badge variant="success">Active</Badge>
+              </div>
+              <p className="text-xs text-gray-500">
+                Next billing date: {new Date(subscription.current_period_end).toLocaleDateString()}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleManageBilling}
+                loading={portalLoading}
+              >
+                Manage Billing
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">
+                No active subscription. Choose a plan to unlock all features.
+              </p>
+              <Link href="/dashboard/billing">
+                <Button size="sm">Choose a Plan</Button>
+              </Link>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Company Settings */}
       {company && (
