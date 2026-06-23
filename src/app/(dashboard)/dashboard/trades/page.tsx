@@ -17,11 +17,19 @@ const categoryOptions = Object.entries(CATEGORY_LABELS).map(([value, label]) => 
   label,
 }));
 
+function getTradeCategoryLabel(trade: Trade): string {
+  if (trade.category === 'other' && trade.notes) {
+    return trade.notes;
+  }
+  return CATEGORY_LABELS[trade.category] || trade.category;
+}
+
 export default function TradesPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     loadTrades();
@@ -71,18 +79,22 @@ export default function TradesPage() {
 
     if (!profile?.company_id) return;
 
+    const category = formData.get('category') as TicketCategory;
+    const customCategory = (formData.get('custom_category') as string)?.trim() || null;
+
     await supabase.from('trades').insert({
       company_id: profile.company_id,
       name: formData.get('name') as string,
       company_name: formData.get('company_name') as string,
       email: formData.get('email') as string,
       phone: (formData.get('phone') as string) || null,
-      category: formData.get('category') as TicketCategory,
-      notes: (formData.get('notes') as string) || null,
+      category,
+      notes: category === 'other' && customCategory ? customCategory : (formData.get('notes') as string) || null,
     });
 
     setShowDialog(false);
     setSaving(false);
+    setSelectedCategory('');
     loadTrades();
   }
 
@@ -138,7 +150,7 @@ export default function TradesPage() {
                 <div className="mt-4 space-y-2">
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <Tag className="h-3.5 w-3.5" />
-                    <span>{CATEGORY_LABELS[trade.category]}</span>
+                    <span>{getTradeCategoryLabel(trade)}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <Mail className="h-3.5 w-3.5" />
@@ -159,7 +171,14 @@ export default function TradesPage() {
         </div>
       )}
 
-      <Dialog open={showDialog} onClose={() => setShowDialog(false)} title="Add Trade">
+      <Dialog
+        open={showDialog}
+        onClose={() => {
+          setShowDialog(false);
+          setSelectedCategory('');
+        }}
+        title="Add Trade"
+      >
         <form onSubmit={handleAddTrade} className="space-y-4">
           <Input id="name" name="name" label="Contact Name" placeholder="Mike Johnson" required />
           <Input
@@ -176,7 +195,17 @@ export default function TradesPage() {
             options={categoryOptions}
             placeholder="Select category..."
             required
+            onChange={(e) => setSelectedCategory(e.target.value)}
           />
+          {selectedCategory === 'other' && (
+            <Input
+              id="custom_category"
+              name="custom_category"
+              label="Specify Trade Type"
+              placeholder="e.g. Framer, Insulation, Stucco..."
+              required
+            />
+          )}
           <Input
             id="email"
             name="email"
@@ -193,7 +222,14 @@ export default function TradesPage() {
             placeholder="(555) 123-4567"
           />
           <div className="flex justify-end gap-3 pt-2">
-            <Button variant="outline" type="button" onClick={() => setShowDialog(false)}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => {
+                setShowDialog(false);
+                setSelectedCategory('');
+              }}
+            >
               Cancel
             </Button>
             <Button type="submit" loading={saving}>
