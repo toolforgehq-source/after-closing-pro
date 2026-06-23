@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   Shield,
@@ -44,16 +45,22 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50" />
+        <div className="absolute inset-0">
+          <Image
+            src="/hero-bg.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gray-900/60" />
+        </div>
         <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
-            <Bot className="h-4 w-4" /> AI-Powered Warranty Management
-          </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Stop warranty calls from{' '}
-            <span className="text-blue-600">eating your life</span>
+            <span className="text-blue-400">eating your life</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-200">
             After Closing Pro uses AI to handle homeowner warranty requests after closing.
             It collects the right info, solves simple issues before they become service calls,
             routes real issues to the right trade, and documents everything.
@@ -67,12 +74,12 @@ export default function LandingPage() {
             </Link>
             <Link
               href="#how-it-works"
-              className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-8 py-4 text-base font-semibold text-gray-700 hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20"
             >
               See How It Works
             </Link>
           </div>
-          <p className="mt-4 text-sm text-gray-400">14-day free trial. No credit card required.</p>
+          <p className="mt-4 text-sm text-gray-300">14-day free trial. No credit card required.</p>
         </div>
       </section>
 
