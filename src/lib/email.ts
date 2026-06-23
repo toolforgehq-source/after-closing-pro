@@ -58,7 +58,15 @@ export function newTicketEmail(builderEmail: string, ticket: { title: string; ad
   });
 }
 
-export function tradeAssignmentEmail(tradeEmail: string, ticket: { title: string; address: string; summary: string; homeownerName: string }) {
+export function tradeAssignmentEmail(tradeEmail: string, ticket: { title: string; address: string; summary: string; homeownerName: string; homeownerEmail?: string; homeownerPhone?: string }) {
+  const contactLines: string[] = [];
+  if (ticket.homeownerPhone) {
+    contactLines.push(`<p style="font-size: 14px; color: #374151; margin: 0 0 4px;">Phone: <a href="tel:${ticket.homeownerPhone}" style="color: #2563eb; text-decoration: none;">${ticket.homeownerPhone}</a></p>`);
+  }
+  if (ticket.homeownerEmail) {
+    contactLines.push(`<p style="font-size: 14px; color: #374151; margin: 0;">Email: <a href="mailto:${ticket.homeownerEmail}" style="color: #2563eb; text-decoration: none;">${ticket.homeownerEmail}</a></p>`);
+  }
+
   return sendEmail({
     to: tradeEmail,
     subject: `Warranty Work Assignment: ${ticket.title}`,
@@ -71,6 +79,12 @@ export function tradeAssignmentEmail(tradeEmail: string, ticket: { title: string
           <h2 style="margin: 0 0 8px; font-size: 16px; color: #111827;">${ticket.title}</h2>
           <p style="color: #6b7280; font-size: 14px; margin: 0 0 4px;">${ticket.address}</p>
           <p style="color: #6b7280; font-size: 14px; margin: 0 0 16px;">Homeowner: ${ticket.homeownerName}</p>
+          ${contactLines.length > 0 ? `
+          <div style="background: #eff6ff; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <p style="font-size: 12px; color: #6b7280; margin: 0 0 8px; font-weight: 600;">Homeowner Contact</p>
+            ${contactLines.join('\n            ')}
+          </div>
+          ` : ''}
           <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
             <p style="font-size: 12px; color: #6b7280; margin: 0 0 4px;">Issue Summary</p>
             <p style="font-size: 14px; color: #374151; margin: 0;">${ticket.summary}</p>
