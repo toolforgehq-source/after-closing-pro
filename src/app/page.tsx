@@ -25,6 +25,12 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link
+              href="/why"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Why I Built This
+            </Link>
+            <Link
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
@@ -385,9 +391,14 @@ export default function LandingPage() {
             <Shield className="h-5 w-5 text-blue-600" />
             <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
           </div>
-          <p className="text-sm text-gray-400">
-            Built by a builder, for builders.
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">
+              Why I Built This
+            </Link>
+            <p className="text-sm text-gray-400">
+              Built by a builder, for builders.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
