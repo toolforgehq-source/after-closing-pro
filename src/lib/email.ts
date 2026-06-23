@@ -1,6 +1,13 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resendClient: Resend | null = null;
+
+function getResend(): Resend {
+  if (!resendClient) {
+    resendClient = new Resend(process.env.RESEND_API_KEY || '');
+  }
+  return resendClient;
+}
 
 interface SendEmailParams {
   to: string;
@@ -14,8 +21,8 @@ export async function sendEmail({ to, subject, html }: SendEmailParams) {
     return;
   }
 
-  await resend.emails.send({
-    from: 'After Closing Pro <notifications@afterclosingpro.com>',
+  await getResend().emails.send({
+    from: 'After Closing Pro <onboarding@resend.dev>',
     to,
     subject,
     html,
