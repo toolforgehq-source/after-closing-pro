@@ -23,22 +23,22 @@ export default function LandingPage() {
             <Shield className="h-7 w-7 text-blue-600" />
             <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-3">
             <Link
               href="/why"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="hidden rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:inline-block"
             >
               Why I Built This
             </Link>
             <Link
               href="/login"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:px-4"
             >
               Sign In
             </Link>
             <Link
               href="/signup"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+              className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 sm:px-4"
             >
               Get Started
             </Link>
@@ -386,19 +386,27 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-blue-600" />
+              <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">
+                Why I Built This
+              </Link>
+              <Link href="/terms" className="text-sm text-gray-500 hover:text-gray-700">
+                Terms
+              </Link>
+              <Link href="/privacy" className="text-sm text-gray-500 hover:text-gray-700">
+                Privacy
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">
-              Why I Built This
-            </Link>
-            <p className="text-sm text-gray-400">
-              Built by a builder, for builders.
-            </p>
-          </div>
+          <p className="mt-4 text-center text-sm text-gray-400">
+            Built by a builder, for builders.
+          </p>
         </div>
       </footer>
     </div>
