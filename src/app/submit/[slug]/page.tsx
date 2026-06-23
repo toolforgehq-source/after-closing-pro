@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Shield, Send, Bot, User, CheckCircle, AlertTriangle, Loader2 } from 'lucide-react';
+import { Shield, Send, Bot, User, CheckCircle, AlertTriangle, Loader2, Camera, X } from 'lucide-react';
 import type { Company, Home, TriageMetadata } from '@/lib/types';
 
 interface ChatMessage {
@@ -31,6 +31,9 @@ export default function HomeownerIntakePage() {
   const [currentInput, setCurrentInput] = useState('');
   const [sending, setSending] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -82,6 +85,38 @@ export default function HomeownerIntakePage() {
     setStep('describe');
   }
 
+  function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    if (files.length + photos.length > 5) return; // Max 5 photos
+
+    const newPhotos = [...photos, ...files].slice(0, 5);
+    setPhotos(newPhotos);
+
+    const newPreviews = newPhotos.map((f) => URL.createObjectURL(f));
+    photoPreviews.forEach((url) => URL.revokeObjectURL(url));
+    setPhotoPreviews(newPreviews);
+
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }
+
+  function removePhoto(index: number) {
+    const newPhotos = photos.filter((_, i) => i !== index);
+    setPhotos(newPhotos);
+    URL.revokeObjectURL(photoPreviews[index]);
+    setPhotoPreviews(photoPreviews.filter((_, i) => i !== index));
+  }
+
+  async function uploadPhotos(): Promise<string[]> {
+    if (photos.length === 0) return [];
+
+    const formData = new FormData();
+    photos.forEach((file) => formData.append('files', file));
+
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+    return data.urls || [];
+  }
+
   async function handleDescribeIssue(e: React.FormEvent) {
     e.preventDefault();
     if (!issueDescription.trim() || !company) return;
@@ -92,6 +127,9 @@ export default function HomeownerIntakePage() {
     setStep('chat');
 
     try {
+      // Upload photos first
+      const urls = await uploadPhotos();
+
       const res = await fetch('/api/triage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -101,6 +139,7 @@ export default function HomeownerIntakePage() {
           homeowner_name: homeownerName,
           homeowner_email: homeownerEmail,
           messages: [{ role: 'user', content: issueDescription }],
+          photo_urls: urls,
         }),
       });
 
@@ -273,6 +312,49 @@ export default function HomeownerIntakePage() {
                 rows={4}
                 required
               />
+
+              {/* Photo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Add Photos <span className="text-gray-400 font-normal">(optional, up to 5)</span>
+                </label>
+                {photoPreviews.length > 0 && (
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {photoPreviews.map((preview, i) => (
+                      <div key={i} className="relative h-20 w-20 rounded-lg overflow-hidden border border-gray-200">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={preview} alt="" className="h-full w-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removePhoto(i)}
+                          className="absolute -right-1 -top-1 rounded-full bg-red-500 p-0.5 text-white shadow-sm hover:bg-red-600"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {photos.length < 5 && (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-2 rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-colors w-full justify-center"
+                  >
+                    <Camera className="h-4 w-4" />
+                    {photos.length === 0 ? 'Add Photos' : 'Add More Photos'}
+                  </button>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/heic"
+                  multiple
+                  onChange={handlePhotoSelect}
+                  className="hidden"
+                />
+              </div>
+
               <Button type="submit" size="lg" className="w-full" loading={sending}>
                 <Send className="mr-2 h-4 w-4" /> Submit Issue
               </Button>
