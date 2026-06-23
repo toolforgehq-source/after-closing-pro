@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
 import { slugify } from '@/lib/utils';
-
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -82,7 +81,7 @@ export default function SignupPage() {
       company_id: company.id,
     });
 
-    router.push('/dashboard');
+    router.push(`/dashboard/billing`);
   }
 
   return (
@@ -176,4 +175,8 @@ export default function SignupPage() {
       </div>
     </div>
   );
+}
+
+export default function SignupPage() {
+  return <SignupForm />;
 }

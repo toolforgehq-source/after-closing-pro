@@ -342,7 +342,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/signup"
+                  href={`/signup?plan=${key}`}
                   className={`mt-6 block rounded-lg px-4 py-2.5 text-center text-sm font-semibold ${
                     key === 'growth'
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
