@@ -2,9 +2,16 @@ import OpenAI from 'openai';
 import { TRIAGE_SYSTEM_PROMPT } from './prompts';
 import type { TriageMetadata } from '@/lib/types';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let openaiClient: OpenAI | null = null;
+
+function getOpenAI(): OpenAI {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
+    });
+  }
+  return openaiClient;
+}
 
 export interface TriageChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -44,7 +51,7 @@ export async function runTriage(
 ${companyContext.emergencyInstructions ? `- Emergency instructions: ${companyContext.emergencyInstructions}` : ''}`;
   }
 
-  const completion = await openai.chat.completions.create({
+  const completion = await getOpenAI().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       { role: 'system', content: systemPrompt },
