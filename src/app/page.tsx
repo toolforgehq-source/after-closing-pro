@@ -37,7 +37,7 @@ export default function LandingPage() {
               href="/signup"
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
             >
-              Start Free Trial
+              Get Started
             </Link>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function LandingPage() {
               href="/signup"
               className="flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-blue-700"
             >
-              Start Free Trial <ArrowRight className="h-5 w-5" />
+              Get Started <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
               href="#how-it-works"
@@ -79,7 +79,7 @@ export default function LandingPage() {
               See How It Works
             </Link>
           </div>
-          <p className="mt-4 text-sm text-gray-300">14-day free trial. No credit card required.</p>
+          <p className="mt-4 text-sm text-gray-300">30-day money-back guarantee. Cancel anytime.</p>
         </div>
       </section>
 
@@ -194,7 +194,7 @@ export default function LandingPage() {
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="text-center text-2xl font-bold text-gray-900">Simple Pricing</h2>
-          <p className="mt-2 text-center text-gray-600">Start free. Upgrade when you&apos;re ready.</p>
+          <p className="mt-2 text-center text-gray-600">Simple plans that grow with you. 30-day money-back guarantee.</p>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {(Object.entries(PLANS) as [string, typeof PLANS[keyof typeof PLANS]][]).map(([key, plan]) => (
@@ -232,7 +232,7 @@ export default function LandingPage() {
                       : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  Start Free Trial
+                  Get Started
                 </Link>
               </div>
             ))}
@@ -251,7 +251,7 @@ export default function LandingPage() {
             href="/signup"
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white hover:bg-blue-700"
           >
-            Start Free Trial <ArrowRight className="h-5 w-5" />
+            Get Started <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </section>
