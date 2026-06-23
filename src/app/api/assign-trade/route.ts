@@ -56,6 +56,8 @@ export async function POST(request: Request) {
           address: ticket.home?.address || 'N/A',
           summary: ticket.ai_summary || ticket.homeowner_message || ticket.description,
           homeownerName: ticket.home?.homeowner_name || 'Homeowner',
+          homeownerEmail: ticket.home?.homeowner_email || undefined,
+          homeownerPhone: ticket.home?.homeowner_phone || undefined,
         });
       } catch (emailError) {
         console.error('Email send error:', emailError);
