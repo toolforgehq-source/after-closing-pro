@@ -4,15 +4,12 @@ import {
   Shield,
   Bot,
   Ticket,
-  Home,
   Wrench,
   CheckCircle,
   ArrowRight,
-  Phone,
   MessageSquare,
-  FileText,
-  Clock,
   Zap,
+  ClipboardList,
 } from 'lucide-react';
 import { PLANS } from '@/lib/types';
 
@@ -53,17 +50,19 @@ export default function LandingPage() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gray-900/60" />
+          <div className="absolute inset-0 bg-gray-900/65" />
         </div>
         <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Stop warranty calls from{' '}
-            <span className="text-blue-400">eating your life</span>
+            Stop being the warranty department{' '}
+            <span className="text-blue-400">after closing.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-200">
-            After Closing Pro uses AI to handle homeowner warranty requests after closing.
-            It collects the right info, solves simple issues before they become service calls,
-            routes real issues to the right trade, and documents everything.
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-200">
+            I built After Closing Pro because I know what it feels like to close a home
+            and still get dragged back into every outlet, leak, door adjustment, and
+            &ldquo;is this warranty?&rdquo; text. Give homeowners one simple warranty link.
+            Our AI collects photos, asks the right follow-up questions, filters out
+            maintenance issues, routes real problems to the right trade, and documents everything.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
@@ -73,35 +72,72 @@ export default function LandingPage() {
               Get Started <ArrowRight className="h-5 w-5" />
             </Link>
             <Link
-              href="#how-it-works"
+              href="#example"
               className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20"
             >
-              See How It Works
+              See Example Ticket
             </Link>
           </div>
-          <p className="mt-4 text-sm text-gray-300">30-day money-back guarantee. Cancel anytime.</p>
+          <p className="mt-4 text-sm text-gray-300">
+            Built by a homebuilder who got tired of managing warranty through texts, calls,
+            memory, and scattered trade messages.
+          </p>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="border-y border-gray-100 bg-gray-50 py-16">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="text-center text-2xl font-bold text-gray-900">Sound Familiar?</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: Phone, text: 'Homeowners calling you at 9pm about a tripped breaker' },
-              { icon: MessageSquare, text: 'Endless texts about issues that are just maintenance' },
-              { icon: Clock, text: 'Hours spent coordinating trades for simple fixes' },
-              { icon: FileText, text: 'No documentation when warranty disputes happen' },
-              { icon: Wrench, text: 'Sending trades for unnecessary service calls' },
-              { icon: Home, text: 'Managing warranty across dozens of homes in your head' },
-            ].map((item, i) => (
-              <div key={i} className="rounded-xl border border-gray-200 bg-white p-5">
-                <item.icon className="h-5 w-5 text-red-400" />
-                <p className="mt-3 text-sm text-gray-700">{item.text}</p>
-              </div>
-            ))}
+      {/* Builder Pain - Emotional Section */}
+      <section className="border-b border-gray-100 bg-white py-16">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            Built from the problems builders actually deal with
+          </h2>
+          <div className="mt-8 space-y-4 text-center text-base leading-relaxed text-gray-600">
+            <p>
+              Warranty work is not just the repair.
+            </p>
+            <p className="text-gray-800 font-medium">
+              It is the 9pm homeowner text.
+              The missing photo.
+              The trade asking for the address again.
+              The homeowner calling about a GFCI reset.
+              The &ldquo;I thought you were handling that&rdquo; conversation.
+              The forgotten punch item that turns into a dispute three months later.
+            </p>
+            <p className="mt-6 text-gray-700">
+              After Closing Pro gives every homeowner one place to submit warranty issues,
+              then turns messy requests into clean, documented tickets your team and trades
+              can actually act on.
+            </p>
           </div>
+        </div>
+      </section>
+
+      {/* This is what warranty really looks like */}
+      <section className="border-b border-gray-100 bg-gray-50 py-16">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            This is what warranty really looks like
+          </h2>
+          <ul className="mt-8 space-y-4">
+            {[
+              'Homeowner texts you at night: "The outlet stopped working."',
+              'You ask for photos, but they send one blurry picture.',
+              'The trade wants the lot number, address, and background again.',
+              'You send someone out and it ends up being maintenance, not warranty.',
+              'A small issue gets forgotten because it lived in a text thread.',
+              'Months later, nobody has a clean record of what happened.',
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white px-5 py-4">
+                <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-600">
+                  {i + 1}
+                </span>
+                <span className="text-sm text-gray-700">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 text-center text-base font-semibold text-gray-800">
+            That is the mess After Closing Pro is built to clean up.
+          </p>
         </div>
       </section>
 
@@ -143,8 +179,83 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Example Ticket */}
+      <section id="example" className="border-y border-gray-100 bg-gray-50 py-20">
+        <div className="mx-auto max-w-3xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            Example: Kitchen outlet not working
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-500">See exactly how After Closing Pro handles a real warranty request</p>
+
+          <div className="mt-10 space-y-4">
+            {/* Homeowner submits */}
+            <div className="rounded-xl border border-gray-200 bg-white p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                <MessageSquare className="h-4 w-4" />
+                Homeowner submits
+              </div>
+              <p className="mt-2 text-base text-gray-800 italic">
+                &ldquo;The outlet by the kitchen sink stopped working.&rdquo;
+              </p>
+            </div>
+
+            {/* AI asks */}
+            <div className="rounded-xl border border-purple-200 bg-purple-50 p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-purple-600 uppercase tracking-wide">
+                <Bot className="h-4 w-4" />
+                AI asks
+              </div>
+              <p className="mt-2 text-base text-gray-800 italic">
+                &ldquo;Have you checked the GFCI outlet nearby and pressed reset?&rdquo;
+              </p>
+            </div>
+
+            {/* Two outcomes */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-green-200 bg-green-50 p-5">
+                <div className="flex items-center gap-2 text-sm font-semibold text-green-700 uppercase tracking-wide">
+                  <CheckCircle className="h-4 w-4" />
+                  If fixed
+                </div>
+                <p className="mt-2 text-sm text-gray-700">
+                  The issue is documented and closed without bothering the builder or electrician.
+                </p>
+              </div>
+              <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+                <div className="flex items-center gap-2 text-sm font-semibold text-blue-700 uppercase tracking-wide">
+                  <ClipboardList className="h-4 w-4" />
+                  If not fixed
+                </div>
+                <p className="mt-2 text-sm text-gray-700">
+                  After Closing Pro creates an electrical ticket with photos, homeowner answers,
+                  urgency, address, and trade recommendation.
+                </p>
+              </div>
+            </div>
+
+            {/* Builder sees */}
+            <div className="rounded-xl border-2 border-gray-300 bg-white p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                <Ticket className="h-4 w-4" />
+                Builder sees
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {['Electrical issue', 'Low urgency', 'GFCI attempted', 'Photos attached', 'Ready to assign'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section className="border-t border-gray-100 bg-gray-50 py-20">
+      <section className="py-20">
         <div className="mx-auto max-w-4xl px-4">
           <h2 className="text-center text-2xl font-bold text-gray-900">Built for Builders</h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -191,7 +302,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section className="py-20">
+      <section className="border-t border-gray-100 bg-gray-50 py-20">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="text-center text-2xl font-bold text-gray-900">Simple Pricing</h2>
           <p className="mt-2 text-center text-gray-600">Simple plans that grow with you. 30-day money-back guarantee.</p>
@@ -241,18 +352,29 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-gray-100 bg-gray-900 py-16">
+      <section className="bg-gray-900 py-16">
         <div className="mx-auto max-w-2xl px-4 text-center">
-          <h2 className="text-2xl font-bold text-white">Ready to stop chasing warranty calls?</h2>
-          <p className="mt-3 text-gray-400">
-            Join builders who are saving hours every week with AI-powered warranty management.
+          <h2 className="text-2xl font-bold text-white">
+            Give homeowners a better warranty process without becoming their 24/7 help desk.
+          </h2>
+          <p className="mt-4 text-gray-400">
+            After Closing Pro helps builders collect better information, prevent unnecessary
+            service calls, organize real warranty issues, and protect themselves with clean documentation.
           </p>
-          <Link
-            href="/signup"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white hover:bg-blue-700"
-          >
-            Get Started <ArrowRight className="h-5 w-5" />
-          </Link>
+          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-8 py-4 text-base font-semibold text-white hover:bg-blue-700"
+            >
+              Get Started <ArrowRight className="h-5 w-5" />
+            </Link>
+            <Link
+              href="#example"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-8 py-4 text-base font-semibold text-white hover:bg-white/10"
+            >
+              See Example Ticket
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -264,7 +386,7 @@ export default function LandingPage() {
             <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
           </div>
           <p className="text-sm text-gray-400">
-            Built by builders, for builders.
+            Built by a builder, for builders.
           </p>
         </div>
       </footer>
