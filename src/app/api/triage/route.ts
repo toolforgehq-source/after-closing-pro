@@ -6,7 +6,7 @@ import type { TicketCategory, TicketUrgency } from '@/lib/types';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { company_id, home_id, homeowner_name, homeowner_email, messages, session_id } = body;
+    const { company_id, home_id, homeowner_name, homeowner_email, messages, session_id, photo_urls } = body;
 
     if (!company_id || !messages || messages.length === 0) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -127,6 +127,18 @@ export async function POST(request: Request) {
         });
 
         await supabase.from('ticket_messages').insert(ticketMessages);
+      }
+
+      // Save photo files to the ticket
+      if (ticket && photo_urls && photo_urls.length > 0) {
+        const fileRecords = photo_urls.map((url: string, i: number) => ({
+          ticket_id: ticket.id,
+          file_url: url,
+          file_name: `photo_${i + 1}.jpg`,
+          file_type: 'image/jpeg',
+          uploaded_by: homeowner_name || 'Homeowner',
+        }));
+        await supabase.from('ticket_files').insert(fileRecords);
       }
 
       // TODO: Send email notification to builder
