@@ -20,14 +20,26 @@ export type TicketCategory =
   | 'electrical'
   | 'plumbing'
   | 'hvac'
+  | 'framing'
+  | 'concrete'
+  | 'foundation'
   | 'drywall'
+  | 'insulation'
   | 'doors_windows'
   | 'flooring'
+  | 'tile'
   | 'roofing'
+  | 'siding'
+  | 'stucco'
+  | 'gutters'
   | 'exterior'
-  | 'appliances'
+  | 'trim_carpentry'
+  | 'countertops'
   | 'cabinetry'
+  | 'appliances'
   | 'painting'
+  | 'masonry'
+  | 'grading'
   | 'landscaping'
   | 'garage'
   | 'structural'
@@ -232,14 +244,26 @@ export const CATEGORY_LABELS: Record<TicketCategory, string> = {
   electrical: 'Electrical',
   plumbing: 'Plumbing',
   hvac: 'HVAC',
+  framing: 'Framing',
+  concrete: 'Concrete',
+  foundation: 'Foundation',
   drywall: 'Drywall',
+  insulation: 'Insulation',
   doors_windows: 'Doors & Windows',
   flooring: 'Flooring',
+  tile: 'Tile',
   roofing: 'Roofing',
+  siding: 'Siding',
+  stucco: 'Stucco',
+  gutters: 'Gutters',
   exterior: 'Exterior',
-  appliances: 'Appliances',
+  trim_carpentry: 'Trim / Finish Carpentry',
+  countertops: 'Countertops',
   cabinetry: 'Cabinetry',
+  appliances: 'Appliances',
   painting: 'Painting',
+  masonry: 'Masonry',
+  grading: 'Grading / Excavation',
   landscaping: 'Landscaping',
   garage: 'Garage',
   structural: 'Structural',
