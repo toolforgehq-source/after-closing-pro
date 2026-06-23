@@ -38,6 +38,8 @@ export default function TicketDetailPage() {
   const [newMessage, setNewMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [selectedTradeId, setSelectedTradeId] = useState('');
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     loadTicketData();
@@ -96,30 +98,33 @@ export default function TicketDetailPage() {
     setUpdating(false);
   }
 
-  async function handleAssignTrade(tradeId: string) {
-    if (!ticket) return;
-    setUpdating(true);
+  async function handleAssignTrade() {
+    if (!ticket || !selectedTradeId) return;
+    setAssigning(true);
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    await supabase
-      .from('tickets')
-      .update({
-        trade_id: tradeId,
-        status: 'assigned_to_trade',
-        assigned_by: user?.id,
-        assigned_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', ticket.id);
 
-    const { data: trade } = await supabase.from('trades').select('*').eq('id', tradeId).single();
-    setTicket({
-      ...ticket,
-      trade_id: tradeId,
-      status: 'assigned_to_trade',
-      trade: trade as Trade,
+    const res = await fetch('/api/assign-trade', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ticket_id: ticket.id,
+        trade_id: selectedTradeId,
+        assigned_by: user?.id,
+      }),
     });
-    setUpdating(false);
+
+    const data = await res.json();
+    if (data.success && data.trade) {
+      setTicket({
+        ...ticket,
+        trade_id: selectedTradeId,
+        status: 'assigned_to_trade',
+        trade: data.trade as Trade,
+      });
+      setSelectedTradeId('');
+    }
+    setAssigning(false);
   }
 
   async function handleSendMessage() {
@@ -360,11 +365,22 @@ export default function TicketDetailPage() {
                 <label className="text-xs font-medium text-gray-500">Assign Trade</label>
                 <Select
                   options={trades.map((t) => ({ value: t.id, label: `${t.name} (${t.company_name})` }))}
-                  value={ticket.trade_id ?? ''}
-                  onChange={(e) => handleAssignTrade(e.target.value)}
+                  value={selectedTradeId || ticket.trade_id || ''}
+                  onChange={(e) => setSelectedTradeId(e.target.value)}
                   placeholder="Select a trade..."
                   className="mt-1"
                 />
+                {(selectedTradeId && selectedTradeId !== ticket.trade_id) && (
+                  <Button
+                    onClick={handleAssignTrade}
+                    loading={assigning}
+                    size="sm"
+                    className="mt-2 w-full"
+                  >
+                    <Send className="mr-2 h-3.5 w-3.5" />
+                    Assign &amp; Notify Trade
+                  </Button>
+                )}
               </div>
 
               {ticket.trade && (
