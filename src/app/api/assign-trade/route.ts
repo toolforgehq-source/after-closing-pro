@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { tradeAssignmentEmail } from '@/lib/email';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 export async function POST(request: Request) {
   try {
@@ -14,6 +9,8 @@ export async function POST(request: Request) {
     if (!ticket_id || !trade_id) {
       return NextResponse.json({ error: 'Missing ticket_id or trade_id' }, { status: 400 });
     }
+
+    const supabase = createServerSupabaseClient();
 
     // Update the ticket
     const { error: updateError } = await supabase
@@ -28,8 +25,8 @@ export async function POST(request: Request) {
       .eq('id', ticket_id);
 
     if (updateError) {
-      console.error('Update error:', updateError);
-      return NextResponse.json({ error: 'Failed to assign trade' }, { status: 500 });
+      console.error('Assign trade update error:', JSON.stringify(updateError));
+      return NextResponse.json({ error: 'Failed to assign trade', details: updateError.message }, { status: 500 });
     }
 
     // Fetch ticket with home info for the email
@@ -40,20 +37,29 @@ export async function POST(request: Request) {
       .single();
 
     // Fetch the trade
-    const { data: trade } = await supabase
+    const { data: trade, error: tradeError } = await supabase
       .from('trades')
       .select('*')
       .eq('id', trade_id)
       .single();
 
+    if (tradeError) {
+      console.error('Fetch trade error:', JSON.stringify(tradeError));
+      return NextResponse.json({ error: 'Failed to fetch trade', details: tradeError.message }, { status: 500 });
+    }
+
     // Send email to the trade
     if (ticket && trade?.email) {
-      await tradeAssignmentEmail(trade.email, {
-        title: ticket.title,
-        address: ticket.home?.address || 'N/A',
-        summary: ticket.ai_summary || ticket.homeowner_message || ticket.description,
-        homeownerName: ticket.home?.homeowner_name || 'Homeowner',
-      });
+      try {
+        await tradeAssignmentEmail(trade.email, {
+          title: ticket.title,
+          address: ticket.home?.address || 'N/A',
+          summary: ticket.ai_summary || ticket.homeowner_message || ticket.description,
+          homeownerName: ticket.home?.homeowner_name || 'Homeowner',
+        });
+      } catch (emailError) {
+        console.error('Email send error:', emailError);
+      }
     }
 
     return NextResponse.json({ success: true, trade });
