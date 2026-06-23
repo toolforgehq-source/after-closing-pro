@@ -5,14 +5,14 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Shield } from 'lucide-react';
+import { Shield, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { slugify } from '@/lib/utils';
 function SignupForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [step, setStep] = useState<'account' | 'company'>('account');
+  const [step, setStep] = useState<'account' | 'company' | 'confirm'>('account');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -29,15 +29,23 @@ function SignupForm() {
 
     const formData = new FormData(e.currentTarget);
     const companyName = formData.get('company_name') as string;
+    const phone = (formData.get('phone') as string) || '';
+    const slug = slugify(companyName) + '-' + Date.now().toString(36);
 
     const supabase = createClient();
+    const origin = window.location.origin;
 
-    // Sign up
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName },
+        data: {
+          full_name: fullName,
+          company_name: companyName,
+          company_phone: phone,
+          company_slug: slug,
+        },
+        emailRedirectTo: `${origin}/api/auth/callback?next=/dashboard/billing`,
       },
     });
 
@@ -53,35 +61,41 @@ function SignupForm() {
       return;
     }
 
-    // Create company
-    const slug = slugify(companyName) + '-' + Date.now().toString(36);
-    const { data: company, error: companyError } = await supabase
-      .from('companies')
-      .insert({
-        name: companyName,
-        slug,
-        phone: (formData.get('phone') as string) || null,
-        warranty_period_months: 12,
-      })
-      .select('id')
-      .single();
+    // If email confirmation is disabled, the user gets a session immediately.
+    // Create company/profile and redirect.
+    if (authData.session) {
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .insert({
+          name: companyName,
+          slug,
+          phone: phone || null,
+          warranty_period_months: 12,
+        })
+        .select('id')
+        .single();
 
-    if (companyError) {
-      setError(companyError.message);
-      setLoading(false);
+      if (companyError) {
+        setError(companyError.message);
+        setLoading(false);
+        return;
+      }
+
+      await supabase.from('profiles').insert({
+        id: authData.user.id,
+        email,
+        full_name: fullName,
+        role: 'builder_admin',
+        company_id: company.id,
+      });
+
+      router.push('/dashboard/billing');
       return;
     }
 
-    // Create profile
-    await supabase.from('profiles').insert({
-      id: authData.user.id,
-      email,
-      full_name: fullName,
-      role: 'builder_admin',
-      company_id: company.id,
-    });
-
-    router.push(`/dashboard/billing`);
+    // Email confirmation is enabled — show the confirmation screen
+    setStep('confirm');
+    setLoading(false);
   }
 
   return (
@@ -93,11 +107,41 @@ function SignupForm() {
             <span className="text-xl font-bold text-gray-900">After Closing Pro</span>
           </Link>
           <p className="mt-2 text-sm text-gray-500">
-            {step === 'account' ? 'Create your builder account' : 'Set up your company'}
+            {step === 'account'
+              ? 'Create your builder account'
+              : step === 'company'
+                ? 'Set up your company'
+                : 'Almost there'}
           </p>
         </div>
 
-        {step === 'account' ? (
+        {step === 'confirm' ? (
+          <div className="rounded-xl border bg-white p-6 shadow-sm text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
+              <Mail className="h-6 w-6 text-blue-600" />
+            </div>
+            <h2 className="text-lg font-bold text-gray-900">Check your email</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              We sent a confirmation link to{' '}
+              <span className="font-medium text-gray-900">{email}</span>.
+              Click the link in the email to activate your account.
+            </p>
+            <p className="mt-4 text-xs text-gray-400">
+              Didn&apos;t get it? Check your spam folder or{' '}
+              <button
+                type="button"
+                onClick={async () => {
+                  const supabase = createClient();
+                  await supabase.auth.resend({ type: 'signup', email });
+                }}
+                className="text-blue-600 hover:underline"
+              >
+                resend the email
+              </button>
+              .
+            </p>
+          </div>
+        ) : step === 'account' ? (
           <form onSubmit={handleAccountSubmit} className="rounded-xl border bg-white p-6 shadow-sm space-y-4">
             <Input
               id="full_name"

@@ -28,6 +28,43 @@ export async function GET(request: Request) {
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // Check if this user needs company/profile setup (email confirmation flow)
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+
+        // No profile yet — create company and profile from signup metadata
+        if (!existingProfile && user.user_metadata?.company_name) {
+          const meta = user.user_metadata;
+
+          const { data: company } = await supabase
+            .from('companies')
+            .insert({
+              name: meta.company_name,
+              slug: meta.company_slug || meta.company_name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now().toString(36),
+              phone: meta.company_phone || null,
+              warranty_period_months: 12,
+            })
+            .select('id')
+            .single();
+
+          if (company) {
+            await supabase.from('profiles').insert({
+              id: user.id,
+              email: user.email,
+              full_name: meta.full_name || '',
+              role: 'builder_admin',
+              company_id: company.id,
+            });
+          }
+        }
+      }
+
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
