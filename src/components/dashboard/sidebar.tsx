@@ -8,6 +8,7 @@ import {
   Ticket,
   Home,
   Wrench,
+  Users,
   Settings,
   LogOut,
   Menu,
@@ -23,6 +24,7 @@ const navigation = [
   { name: 'Tickets', href: '/dashboard/tickets', icon: Ticket },
   { name: 'Homes', href: '/dashboard/homes', icon: Home },
   { name: 'Trades', href: '/dashboard/trades', icon: Wrench },
+  { name: 'Team', href: '/dashboard/team', icon: Users },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ];
 

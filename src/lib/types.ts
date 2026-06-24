@@ -282,8 +282,7 @@ export const PLANS = {
       'AI-powered issue triage',
       'Homeowner intake portal',
       'Ticket management',
-      'Trade assignment',
-      'Email notifications',
+      'Trade assignment & email notifications',
       '2 team members',
     ],
   },
@@ -295,11 +294,8 @@ export const PLANS = {
     features: [
       'Up to 50 active warranty homes',
       'Everything in Starter',
-      'Custom warranty rules',
-      'Priority support',
-      'Reporting & analytics',
       '5 team members',
-      'Branded homeowner portal',
+      'Priority email support',
     ],
   },
   pro: {
@@ -310,11 +306,8 @@ export const PLANS = {
     features: [
       'Unlimited warranty homes',
       'Everything in Growth',
-      'Advanced reporting',
-      'Custom integrations',
-      'Dedicated support',
       'Unlimited team members',
-      'White-label options',
+      'Priority email support',
     ],
   },
 } as const;

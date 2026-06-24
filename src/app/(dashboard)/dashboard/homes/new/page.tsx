@@ -9,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { PLANS } from '@/lib/types';
+import type { Subscription } from '@/lib/types';
 
 export default function NewHomePage() {
   const router = useRouter();
@@ -36,6 +38,36 @@ export default function NewHomePage() {
       setError('No company found. Please complete setup first.');
       setLoading(false);
       return;
+    }
+
+    // Check home limit based on subscription plan
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('company_id', profile.company_id)
+      .eq('status', 'active')
+      .single() as { data: Subscription | null };
+
+    const plan = subscription?.plan as keyof typeof PLANS | undefined;
+    const maxHomes = plan ? PLANS[plan].maxHomes : 0;
+
+    if (!subscription) {
+      setError('You need an active subscription to add homes. Please choose a plan first.');
+      setLoading(false);
+      return;
+    }
+
+    if (maxHomes > 0) {
+      const { count } = await supabase
+        .from('homes')
+        .select('*', { count: 'exact', head: true })
+        .eq('company_id', profile.company_id);
+
+      if (count !== null && count >= maxHomes) {
+        setError(`Your ${PLANS[plan!].name} plan allows up to ${maxHomes} homes. Upgrade your plan to add more.`);
+        setLoading(false);
+        return;
+      }
     }
 
     const closingDate = formData.get('closing_date') as string;
