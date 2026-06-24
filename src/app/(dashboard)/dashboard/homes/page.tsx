@@ -7,12 +7,14 @@ import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Home as HomeIcon, Plus, Calendar, User, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
-import type { Home, Company } from '@/lib/types';
+import type { Home, Company, Subscription } from '@/lib/types';
+import { PLANS } from '@/lib/types';
 import { formatDate, isWarrantyActive } from '@/lib/utils';
 
 export default function HomesPage() {
   const [homes, setHomes] = useState<Home[]>([]);
   const [company, setCompany] = useState<Company | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -33,17 +35,19 @@ export default function HomesPage() {
         return;
       }
 
-      const [homesResult, companyResult] = await Promise.all([
+      const [homesResult, companyResult, subResult] = await Promise.all([
         supabase
           .from('homes')
           .select('*')
           .eq('company_id', profile.company_id)
           .order('created_at', { ascending: false }),
         supabase.from('companies').select('*').eq('id', profile.company_id).single(),
+        supabase.from('subscriptions').select('*').eq('company_id', profile.company_id).eq('status', 'active').single(),
       ]);
 
       setHomes((homesResult.data as Home[]) ?? []);
       setCompany(companyResult.data as Company | null);
+      setSubscription(subResult.data as Subscription | null);
       setLoading(false);
     }
 
@@ -71,7 +75,17 @@ export default function HomesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Homes</h1>
-          <p className="mt-1 text-sm text-gray-500">Manage warranty homes and homeowner access</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Manage warranty homes and homeowner access
+            {subscription && (() => {
+              const plan = subscription.plan as keyof typeof PLANS;
+              const max = PLANS[plan]?.maxHomes;
+              if (max && max > 0) {
+                return <span className="ml-2 text-gray-400">({homes.length}/{max} used)</span>;
+              }
+              return <span className="ml-2 text-gray-400">({homes.length} homes)</span>;
+            })()}
+          </p>
         </div>
         <Link href="/dashboard/homes/new">
           <Button>
