@@ -33,7 +33,7 @@ export async function POST() {
 
     const session = await stripe.billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://afterclosingpro.com'}/dashboard/settings`,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.afterclosingpro.com'}/dashboard/settings`,
     });
 
     return NextResponse.json({ url: session.url });

@@ -55,8 +55,9 @@ export async function POST(request: Request) {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://afterclosingpro.com'}/dashboard?billing=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://afterclosingpro.com'}/dashboard/settings?billing=canceled`,
+      allow_promotion_codes: true,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.afterclosingpro.com'}/dashboard?billing=success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.afterclosingpro.com'}/dashboard/settings?billing=canceled`,
       subscription_data: {
         metadata: {
           company_id: profile.company_id,
