@@ -3,15 +3,15 @@ import Image from 'next/image';
 type LogoSize = 'sm' | 'md' | 'lg';
 
 const iconSizes: Record<LogoSize, { width: number; height: number; className: string }> = {
-  sm: { width: 20, height: 20, className: 'h-5 w-5' },
-  md: { width: 28, height: 28, className: 'h-7 w-7' },
-  lg: { width: 32, height: 32, className: 'h-8 w-8' },
+  sm: { width: 28, height: 28, className: 'h-7 w-7' },
+  md: { width: 36, height: 36, className: 'h-9 w-9' },
+  lg: { width: 44, height: 44, className: 'h-11 w-11' },
 };
 
 const wordmarkSizes: Record<LogoSize, { width: number; height: number; className: string }> = {
-  sm: { width: 100, height: 16, className: 'h-4' },
-  md: { width: 140, height: 22, className: 'h-[22px]' },
-  lg: { width: 160, height: 26, className: 'h-[26px]' },
+  sm: { width: 120, height: 20, className: 'h-5' },
+  md: { width: 160, height: 28, className: 'h-7' },
+  lg: { width: 200, height: 34, className: 'h-[34px]' },
 };
 
 interface LogoProps {
