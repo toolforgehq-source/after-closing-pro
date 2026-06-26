@@ -6,7 +6,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Shield, Send, Bot, User, CheckCircle, AlertTriangle, Loader2, Camera, X } from 'lucide-react';
+import { Send, Bot, User, CheckCircle, AlertTriangle, Loader2, Camera, X } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 import type { Company, Home, TriageMetadata } from '@/lib/types';
 
 interface ChatMessage {
@@ -230,7 +231,7 @@ export default function HomeownerIntakePage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <Shield className="mx-auto h-12 w-12 text-gray-300" />
+          <div className="flex justify-center opacity-30"><Logo size="lg" variant="icon" /></div>
           <h1 className="mt-4 text-lg font-semibold text-gray-900">Page Not Found</h1>
           <p className="mt-1 text-sm text-gray-500">This warranty portal link is not valid.</p>
         </div>
@@ -244,7 +245,7 @@ export default function HomeownerIntakePage() {
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <Shield className="h-6 w-6 text-blue-600" />
+            <Logo size="sm" variant="icon" />
             <div>
               <p className="text-sm font-bold text-gray-900">{company.name}</p>
               <p className="text-xs text-gray-500">Warranty Support</p>

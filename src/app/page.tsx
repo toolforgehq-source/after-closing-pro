@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {
-  Shield,
   Bot,
   Ticket,
   Wrench,
@@ -10,8 +9,10 @@ import {
   MessageSquare,
   Zap,
   ClipboardList,
+  ShieldCheck,
 } from 'lucide-react';
 import { PLANS } from '@/lib/types';
+import { Logo } from '@/components/ui/logo';
 
 export default function LandingPage() {
   return (
@@ -20,8 +21,7 @@ export default function LandingPage() {
       <nav className="border-b border-gray-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <Shield className="h-7 w-7 text-blue-600" />
-            <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
+            <Logo size="md" />
           </div>
           <div className="flex items-center gap-1 sm:gap-3">
             <Link
@@ -282,7 +282,7 @@ export default function LandingPage() {
                 desc: 'AI recommends the right trade. Assign in one click. Trades get email notifications with all the details.',
               },
               {
-                icon: Shield,
+                icon: ShieldCheck,
                 title: 'Warranty Protection',
                 desc: 'Every message, photo, and decision is documented. Full audit trail for warranty disputes.',
               },
@@ -389,8 +389,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
+              <Logo size="sm" />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">

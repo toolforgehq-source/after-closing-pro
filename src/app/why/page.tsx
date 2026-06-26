@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Shield, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 export default function WhyPage() {
   return (
@@ -8,8 +9,7 @@ export default function WhyPage() {
       <nav className="border-b border-gray-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Shield className="h-7 w-7 text-blue-600" />
-            <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
+            <Logo size="md" />
           </Link>
           <div className="flex items-center gap-3">
             <Link
@@ -163,8 +163,7 @@ export default function WhyPage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
+              <Logo size="sm" />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">

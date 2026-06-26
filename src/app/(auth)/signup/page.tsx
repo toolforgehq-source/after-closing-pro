@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Shield, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 import Link from 'next/link';
 import { slugify } from '@/lib/utils';
 function SignupForm() {
@@ -103,8 +104,7 @@ function SignupForm() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
-            <Shield className="h-8 w-8 text-blue-600" />
-            <span className="text-xl font-bold text-gray-900">After Closing Pro</span>
+            <Logo size="lg" />
           </Link>
           <p className="mt-2 text-sm text-gray-500">
             {step === 'account'
