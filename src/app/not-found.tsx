@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { Shield, ArrowLeft, Home } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white px-4">
       <div className="text-center">
-        <Shield className="mx-auto h-12 w-12 text-blue-600" />
+        <div className="flex justify-center"><Logo size="lg" variant="icon" /></div>
         <h1 className="mt-4 text-6xl font-extrabold text-gray-900">404</h1>
         <p className="mt-2 text-lg text-gray-600">Page not found</p>
         <p className="mt-1 text-sm text-gray-500">

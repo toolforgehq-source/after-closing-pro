@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Shield, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,8 +14,7 @@ export default function PrivacyPage() {
       <nav className="border-b border-gray-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Shield className="h-7 w-7 text-blue-600" />
-            <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
+            <Logo size="md" />
           </Link>
           <div className="flex items-center gap-3">
             <Link
@@ -215,8 +215,7 @@ export default function PrivacyPage() {
       <footer className="border-t border-gray-100 py-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-semibold text-gray-900">After Closing Pro</span>
+            <Logo size="sm" />
           </div>
           <div className="flex items-center gap-4">
             <Link href="/terms" className="text-sm text-gray-500 hover:text-gray-700">

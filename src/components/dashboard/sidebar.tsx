@@ -13,8 +13,8 @@ import {
   LogOut,
   Menu,
   X,
-  Shield,
 } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -42,8 +42,7 @@ export function Sidebar() {
   const navContent = (
     <>
       <div className="flex h-16 items-center gap-2 px-6">
-        <Shield className="h-7 w-7 text-blue-600" />
-        <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
+        <Logo size="md" />
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {

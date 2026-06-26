@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Shield, ArrowLeft, Send, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Send, CheckCircle } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,8 +42,7 @@ export default function ContactPage() {
       <nav className="border-b border-gray-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Shield className="h-7 w-7 text-blue-600" />
-            <span className="text-lg font-bold text-gray-900">After Closing Pro</span>
+            <Logo size="md" />
           </Link>
           <div className="flex items-center gap-3">
             <Link
