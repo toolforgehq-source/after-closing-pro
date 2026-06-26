@@ -185,6 +185,30 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Demo Video */}
+      <section className="border-t border-gray-100 bg-gray-50 py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            See It In Action
+          </h2>
+          <p className="mt-2 text-center text-gray-600">
+            Watch the full flow — from homeowner submission to clean builder ticket in under 90 seconds.
+          </p>
+          <div className="mt-10 overflow-hidden rounded-2xl border border-gray-200 shadow-xl">
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              poster=""
+              className="w-full"
+            >
+              <source src="/demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </section>
+
       {/* Example Ticket */}
       <section id="example" className="border-y border-gray-100 bg-gray-50 py-20">
         <div className="mx-auto max-w-3xl px-4">
