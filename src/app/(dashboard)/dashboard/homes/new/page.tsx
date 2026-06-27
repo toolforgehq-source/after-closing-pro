@@ -11,6 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { PLANS } from '@/lib/types';
 import type { Subscription } from '@/lib/types';
+import { isAdminEmail, getAdminSubscription } from '@/lib/admin';
 
 export default function NewHomePage() {
   const router = useRouter();
@@ -41,12 +42,18 @@ export default function NewHomePage() {
     }
 
     // Check home limit based on subscription plan
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('*')
-      .eq('company_id', profile.company_id)
-      .eq('status', 'active')
-      .single() as { data: Subscription | null };
+    let subscription: Subscription | null = null;
+    if (isAdminEmail(user.email)) {
+      subscription = getAdminSubscription(profile.company_id);
+    } else {
+      const { data: subData } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('company_id', profile.company_id)
+        .eq('status', 'active')
+        .single() as { data: Subscription | null };
+      subscription = subData;
+    }
 
     const plan = subscription?.plan as keyof typeof PLANS | undefined;
     const maxHomes = plan ? PLANS[plan].maxHomes : 0;

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import type { Home, Company, Subscription } from '@/lib/types';
 import { PLANS } from '@/lib/types';
 import { formatDate, isWarrantyActive } from '@/lib/utils';
+import { isAdminEmail, getAdminSubscription } from '@/lib/admin';
 
 export default function HomesPage() {
   const [homes, setHomes] = useState<Home[]>([]);
@@ -47,7 +48,10 @@ export default function HomesPage() {
 
       setHomes((homesResult.data as Home[]) ?? []);
       setCompany(companyResult.data as Company | null);
-      setSubscription(subResult.data as Subscription | null);
+      const sub = isAdminEmail(user.email)
+        ? getAdminSubscription(profile.company_id)
+        : (subResult.data as Subscription | null);
+      setSubscription(sub);
       setLoading(false);
     }
 

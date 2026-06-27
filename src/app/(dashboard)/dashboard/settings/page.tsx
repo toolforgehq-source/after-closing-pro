@@ -12,6 +12,7 @@ import type { Company, Profile, Subscription } from '@/lib/types';
 import { PLANS } from '@/lib/types';
 import Link from 'next/link';
 import { CreditCard } from 'lucide-react';
+import { isAdminEmail, getAdminSubscription } from '@/lib/admin';
 
 export default function SettingsPage() {
   const [company, setCompany] = useState<Company | null>(null);
@@ -51,7 +52,10 @@ export default function SettingsPage() {
             .single(),
         ]);
         setCompany(companyResult.data as Company | null);
-        setSubscription(subResult.data as Subscription | null);
+        const sub = isAdminEmail(user.email)
+          ? getAdminSubscription(profileData.company_id)
+          : (subResult.data as Subscription | null);
+        setSubscription(sub);
       }
       setLoading(false);
     }
