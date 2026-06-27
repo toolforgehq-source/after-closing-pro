@@ -9,6 +9,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Users, UserPlus, Mail, Trash2 } from 'lucide-react';
 import { PLANS } from '@/lib/types';
 import type { Profile, Subscription } from '@/lib/types';
+import { isAdminEmail, getAdminSubscription } from '@/lib/admin';
 
 interface TeamInvite {
   id: string;
@@ -72,7 +73,10 @@ export default function TeamPage() {
 
     setMembers((membersResult.data as Profile[]) ?? []);
     setInvites((invitesResult.data as TeamInvite[]) ?? []);
-    setSubscription(subResult.data as Subscription | null);
+    const sub = isAdminEmail(user.email)
+      ? getAdminSubscription(profile.company_id)
+      : (subResult.data as Subscription | null);
+    setSubscription(sub);
     setLoading(false);
   }
 

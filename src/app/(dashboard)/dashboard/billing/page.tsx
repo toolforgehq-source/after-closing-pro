@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { PLANS } from '@/lib/types';
+import { isAdminEmail } from '@/lib/admin';
 
 export default function BillingPage() {
+  const router = useRouter();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function checkAdmin() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && isAdminEmail(user.email)) {
+        router.replace('/dashboard');
+      }
+    }
+    checkAdmin();
+  }, [router]);
 
   async function handleSelectPlan(plan: string) {
     setLoadingPlan(plan);
