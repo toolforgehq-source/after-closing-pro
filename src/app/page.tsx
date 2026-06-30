@@ -118,6 +118,50 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Product Walkthrough Video */}
+      <section className="border-b border-gray-100 bg-gray-50 py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            See It In Action
+          </h2>
+          <p className="mt-2 text-center text-gray-600">
+            Watch the full flow — from homeowner submission to clean builder ticket.
+          </p>
+          <div className="mt-10 overflow-hidden rounded-2xl border border-gray-200 shadow-xl">
+            <video
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full"
+            >
+              <source src="/demo-walkthrough.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          {/* Trade Email Notification */}
+          <div className="mt-16">
+            <h3 className="text-center text-xl font-bold text-gray-900">
+              Warranty Assignment Email Sent to Trade
+            </h3>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              When you assign a trade, they get everything they need in one email.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-xl">
+                <Image
+                  src="/trade-email-example.png"
+                  alt="Example warranty assignment email sent to the trade"
+                  width={800}
+                  height={600}
+                  className="w-full max-w-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* This is what warranty really looks like */}
       <section className="border-b border-gray-100 bg-gray-50 py-16">
         <div className="mx-auto max-w-3xl px-4">
@@ -181,30 +225,6 @@ export default function LandingPage() {
                 Real issues become organized tickets with AI summaries, trade recommendations, and urgency ratings. Assign a trade in one click.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Demo Video */}
-      <section className="border-t border-gray-100 bg-gray-50 py-20">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="text-center text-2xl font-bold text-gray-900">
-            See It In Action
-          </h2>
-          <p className="mt-2 text-center text-gray-600">
-            Watch the full flow — from homeowner submission to clean builder ticket in under 90 seconds.
-          </p>
-          <div className="mt-10 overflow-hidden rounded-2xl border border-gray-200 shadow-xl">
-            <video
-              controls
-              playsInline
-              preload="metadata"
-              poster=""
-              className="w-full"
-            >
-              <source src="/demo.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
           </div>
         </div>
       </section>
