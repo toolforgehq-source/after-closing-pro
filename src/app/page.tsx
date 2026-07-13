@@ -27,8 +27,26 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-1 sm:gap-3">
             <Link
+              href="/features"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 md:inline-block"
+            >
+              Features
+            </Link>
+            <Link
+              href="/pricing"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 md:inline-block"
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/faq"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:inline-block"
+            >
+              FAQ
+            </Link>
+            <Link
               href="/why"
-              className="hidden rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:inline-block"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:inline-block"
             >
               Why I Built This
             </Link>
@@ -485,6 +503,18 @@ export default function LandingPage() {
               <Logo size="sm" />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link href="/features" className="text-sm text-gray-500 hover:text-gray-700">
+                Features
+              </Link>
+              <Link href="/how-it-works" className="text-sm text-gray-500 hover:text-gray-700">
+                How It Works
+              </Link>
+              <Link href="/pricing" className="text-sm text-gray-500 hover:text-gray-700">
+                Pricing
+              </Link>
+              <Link href="/faq" className="text-sm text-gray-500 hover:text-gray-700">
+                FAQ
+              </Link>
               <Link href="/why" className="text-sm text-gray-500 hover:text-gray-700">
                 Why I Built This
               </Link>

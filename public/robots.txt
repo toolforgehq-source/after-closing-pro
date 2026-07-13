@@ -1,4 +1,30 @@
+# After Closing Pro — https://www.afterclosingpro.com
+
 User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /api
+
+# AI search & assistant crawlers — explicitly allowed on public pages
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://www.afterclosingpro.com/sitemap.xml

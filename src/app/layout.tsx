@@ -61,10 +61,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'After Closing Pro',
+    url: siteUrl,
+    logo: `${siteUrl}/apple-touch-icon.png`,
+    description:
+      'AI-powered warranty management software for homebuilders — triage post-closing issues, guide warranty coverage, assign trades, and schedule repairs, all documented.',
+  };
+
   return (
     <html lang="en">
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
       </head>
       <body className="antialiased">
         {children}
