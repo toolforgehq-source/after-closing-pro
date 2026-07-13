@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { runTriage } from '@/lib/ai/triage';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { getWarrantyCoverage, buildCoverageContext } from '@/lib/warranty';
 import type { TicketCategory, TicketUrgency } from '@/lib/types';
 
 export async function POST(request: Request) {
@@ -17,7 +18,9 @@ export async function POST(request: Request) {
     // Get company context
     const { data: company } = await supabase
       .from('companies')
-      .select('name, warranty_period_months, emergency_instructions')
+      .select(
+        'name, warranty_period_months, emergency_instructions, warranty_workmanship_months, warranty_systems_months, warranty_structural_months, warranty_excluded_items, warranty_coverage_notes'
+      )
       .eq('id', company_id)
       .single();
 
@@ -26,6 +29,7 @@ export async function POST(request: Request) {
       name: company.name,
       warrantyPeriodMonths: company.warranty_period_months,
       emergencyInstructions: company.emergency_instructions ?? undefined,
+      coverageContext: buildCoverageContext(getWarrantyCoverage(company)),
     } : undefined);
 
     // Create or update triage session
@@ -87,6 +91,7 @@ export async function POST(request: Request) {
         ai_urgency: result.metadata.urgency || null,
         ai_trade_recommendation: result.metadata.trade || null,
         ai_warranty_likelihood: result.metadata.warranty_likelihood || null,
+        ai_coverage_reason: result.metadata.coverage_reason || null,
         ai_resolved: false,
       };
 
@@ -167,6 +172,7 @@ export async function POST(request: Request) {
           ai_urgency: 'low',
           ai_trade_recommendation: null,
           ai_warranty_likelihood: result.metadata.warranty_likelihood || null,
+          ai_coverage_reason: result.metadata.coverage_reason || null,
           ai_resolved: true,
         });
       }
