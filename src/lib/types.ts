@@ -57,6 +57,11 @@ export interface Company {
   address: string | null;
   warranty_period_months: number;
   emergency_instructions: string | null;
+  warranty_workmanship_months: number;
+  warranty_systems_months: number;
+  warranty_structural_months: number;
+  warranty_excluded_items: string | null;
+  warranty_coverage_notes: string | null;
   created_at: string;
 }
 
@@ -117,6 +122,9 @@ export interface Ticket {
   ai_urgency: TicketUrgency | null;
   ai_trade_recommendation: string | null;
   ai_warranty_likelihood: string | null;
+  ai_coverage_reason: string | null;
+  coverage_override: 'covered' | 'not_covered' | null;
+  coverage_override_at: string | null;
   ai_resolved: boolean;
   location: string | null;
   assigned_by: string | null;
@@ -176,6 +184,7 @@ export interface TriageMetadata {
   trade?: string;
   urgency?: TicketUrgency;
   warranty_likelihood?: 'likely_warranty' | 'likely_maintenance' | 'unclear' | 'likely_not_warranty';
+  coverage_reason?: string;
   safety_escalation?: boolean;
   homeowner_response?: string;
   builder_summary?: string;

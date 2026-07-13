@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Copy, Check } from 'lucide-react';
 import type { Company, Profile, Subscription } from '@/lib/types';
 import { PLANS } from '@/lib/types';
+import { getWarrantyCoverage } from '@/lib/warranty';
 import Link from 'next/link';
 import { CreditCard } from 'lucide-react';
 import { isAdminEmail, getAdminSubscription } from '@/lib/admin';
@@ -23,6 +24,8 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   const [copied, setCopied] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
+  const [savingCoverage, setSavingCoverage] = useState(false);
+  const [coverageSaved, setCoverageSaved] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -97,6 +100,30 @@ export default function SettingsPage() {
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  }
+
+  async function handleSaveCoverage(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!company) return;
+    setSavingCoverage(true);
+
+    const formData = new FormData(e.currentTarget);
+    const supabase = createClient();
+
+    const updates = {
+      warranty_workmanship_months: parseInt(formData.get('warranty_workmanship_months') as string) || 12,
+      warranty_systems_months: parseInt(formData.get('warranty_systems_months') as string) || 24,
+      warranty_structural_months: parseInt(formData.get('warranty_structural_months') as string) || 120,
+      warranty_excluded_items: (formData.get('warranty_excluded_items') as string) || null,
+      warranty_coverage_notes: (formData.get('warranty_coverage_notes') as string) || null,
+    };
+
+    await supabase.from('companies').update(updates).eq('id', company.id);
+    setCompany({ ...company, ...updates });
+
+    setSavingCoverage(false);
+    setCoverageSaved(true);
+    setTimeout(() => setCoverageSaved(false), 2000);
   }
 
   function copyPortalUrl() {
@@ -262,6 +289,79 @@ export default function SettingsPage() {
           </Card>
         </form>
       )}
+
+      {/* Warranty Coverage */}
+      {company && (() => {
+        const coverage = getWarrantyCoverage(company);
+        return (
+          <form onSubmit={handleSaveCoverage}>
+            <Card>
+              <CardHeader>
+                <h2 className="text-base font-semibold text-gray-900">Warranty Coverage</h2>
+                <p className="text-sm text-gray-500">
+                  The AI uses these terms to tell homeowners when an issue is likely normal maintenance
+                  vs. a covered warranty item — before it ever reaches you. It never denies a claim;
+                  you always make the final call.
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <Input
+                    id="warranty_workmanship_months"
+                    name="warranty_workmanship_months"
+                    label="Workmanship (months)"
+                    type="number"
+                    defaultValue={coverage.workmanshipMonths}
+                    min="0"
+                    max="240"
+                  />
+                  <Input
+                    id="warranty_systems_months"
+                    name="warranty_systems_months"
+                    label="Systems (months)"
+                    type="number"
+                    defaultValue={coverage.systemsMonths}
+                    min="0"
+                    max="240"
+                  />
+                  <Input
+                    id="warranty_structural_months"
+                    name="warranty_structural_months"
+                    label="Structural (months)"
+                    type="number"
+                    defaultValue={coverage.structuralMonths}
+                    min="0"
+                    max="240"
+                  />
+                </div>
+                <Textarea
+                  id="warranty_excluded_items"
+                  name="warranty_excluded_items"
+                  label="Not covered / normal maintenance (one per line)"
+                  defaultValue={coverage.excludedItems}
+                  rows={8}
+                />
+                <Textarea
+                  id="warranty_coverage_notes"
+                  name="warranty_coverage_notes"
+                  label="Additional coverage notes (optional)"
+                  placeholder="Anything specific to your warranty the AI should know..."
+                  defaultValue={coverage.coverageNotes}
+                  rows={3}
+                />
+              </CardContent>
+              <CardFooter>
+                <div className="flex items-center gap-3">
+                  <Button type="submit" loading={savingCoverage}>
+                    {coverageSaved ? 'Saved!' : 'Save Coverage Terms'}
+                  </Button>
+                  {coverageSaved && <Badge variant="success">Changes saved</Badge>}
+                </div>
+              </CardFooter>
+            </Card>
+          </form>
+        );
+      })()}
 
       {/* Account Info */}
       {profile && (

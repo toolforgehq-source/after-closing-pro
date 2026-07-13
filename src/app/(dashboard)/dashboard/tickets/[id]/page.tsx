@@ -18,6 +18,9 @@ import {
   Send,
   CheckCircle,
   AlertTriangle,
+  ShieldCheck,
+  ShieldX,
+  ShieldQuestion,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { Ticket, TicketMessage, Trade, TicketStatus } from '@/lib/types';
@@ -26,6 +29,7 @@ import {
   URGENCY_LABELS,
   CATEGORY_LABELS,
 } from '@/lib/types';
+import { effectiveCoverageVerdict } from '@/lib/warranty';
 import { formatDateTime, timeAgo } from '@/lib/utils';
 
 export default function TicketDetailPage() {
@@ -40,6 +44,7 @@ export default function TicketDetailPage() {
   const [updating, setUpdating] = useState(false);
   const [selectedTradeId, setSelectedTradeId] = useState('');
   const [assigning, setAssigning] = useState(false);
+  const [coverageUpdating, setCoverageUpdating] = useState(false);
 
   useEffect(() => {
     loadTicketData();
@@ -127,6 +132,23 @@ export default function TicketDetailPage() {
     setAssigning(false);
   }
 
+  async function handleCoverageOverride(decision: 'covered' | 'not_covered' | null) {
+    if (!ticket) return;
+    setCoverageUpdating(true);
+    const supabase = createClient();
+    const overrideAt = decision ? new Date().toISOString() : null;
+    await supabase
+      .from('tickets')
+      .update({
+        coverage_override: decision,
+        coverage_override_at: overrideAt,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', ticket.id);
+    setTicket({ ...ticket, coverage_override: decision, coverage_override_at: overrideAt });
+    setCoverageUpdating(false);
+  }
+
   async function handleSendMessage() {
     if (!newMessage.trim() || !ticket) return;
     setSending(true);
@@ -203,6 +225,87 @@ export default function TicketDetailPage() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main content */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Warranty Coverage */}
+          {(() => {
+            const verdict = effectiveCoverageVerdict(ticket.coverage_override, ticket.ai_warranty_likelihood);
+            const isOverridden = !!ticket.coverage_override;
+            const config = {
+              covered: {
+                Icon: ShieldCheck,
+                label: 'Likely Covered',
+                box: 'border-green-200 bg-green-50',
+                iconColor: 'text-green-600',
+              },
+              not_covered: {
+                Icon: ShieldX,
+                label: 'Likely Not Covered — Normal Maintenance',
+                box: 'border-amber-200 bg-amber-50',
+                iconColor: 'text-amber-600',
+              },
+              unclear: {
+                Icon: ShieldQuestion,
+                label: 'Coverage Unclear — Needs Review',
+                box: 'border-gray-200 bg-gray-50',
+                iconColor: 'text-gray-500',
+              },
+            }[verdict];
+            const { Icon } = config;
+            return (
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-blue-500" />
+                    <h2 className="text-sm font-semibold text-gray-900">Warranty Coverage</h2>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className={`flex items-start gap-3 rounded-lg border p-3 ${config.box}`}>
+                    <Icon className={`mt-0.5 h-5 w-5 flex-shrink-0 ${config.iconColor}`} />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-gray-900">{config.label}</p>
+                      {ticket.ai_coverage_reason && (
+                        <p className="mt-0.5 text-sm text-gray-600">{ticket.ai_coverage_reason}</p>
+                      )}
+                      <p className="mt-1 text-xs text-gray-400">
+                        {isOverridden ? 'Set by builder' : 'AI assessment — you make the final call'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Button
+                      variant={ticket.coverage_override === 'covered' ? 'primary' : 'outline'}
+                      size="sm"
+                      onClick={() => handleCoverageOverride('covered')}
+                      loading={coverageUpdating}
+                    >
+                      <ShieldCheck className="mr-1.5 h-3.5 w-3.5" />
+                      Mark Covered
+                    </Button>
+                    <Button
+                      variant={ticket.coverage_override === 'not_covered' ? 'primary' : 'outline'}
+                      size="sm"
+                      onClick={() => handleCoverageOverride('not_covered')}
+                      loading={coverageUpdating}
+                    >
+                      <ShieldX className="mr-1.5 h-3.5 w-3.5" />
+                      Mark Not Covered
+                    </Button>
+                    {isOverridden && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleCoverageOverride(null)}
+                        loading={coverageUpdating}
+                      >
+                        Reset to AI
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })()}
+
           {/* AI Summary */}
           {ticket.ai_summary && (
             <Card>

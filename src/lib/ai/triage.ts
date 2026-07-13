@@ -40,7 +40,12 @@ function cleanResponseMessage(content: string): string {
 
 export async function runTriage(
   messages: TriageChatMessage[],
-  companyContext?: { name: string; warrantyPeriodMonths: number; emergencyInstructions?: string }
+  companyContext?: {
+    name: string;
+    warrantyPeriodMonths: number;
+    emergencyInstructions?: string;
+    coverageContext?: string;
+  }
 ): Promise<TriageResponse> {
   let systemPrompt = TRIAGE_SYSTEM_PROMPT;
 
@@ -48,7 +53,8 @@ export async function runTriage(
     systemPrompt += `\n\nBUILDER CONTEXT:
 - Builder company: ${companyContext.name}
 - Standard warranty period: ${companyContext.warrantyPeriodMonths} months
-${companyContext.emergencyInstructions ? `- Emergency instructions: ${companyContext.emergencyInstructions}` : ''}`;
+${companyContext.emergencyInstructions ? `- Emergency instructions: ${companyContext.emergencyInstructions}` : ''}
+${companyContext.coverageContext ? `\nWARRANTY COVERAGE TERMS:\n${companyContext.coverageContext}` : ''}`;
   }
 
   const completion = await getOpenAI().chat.completions.create({
