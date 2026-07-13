@@ -10,6 +10,8 @@ import {
   Zap,
   ClipboardList,
   ShieldCheck,
+  Scale,
+  CalendarCheck,
 } from 'lucide-react';
 import { PLANS } from '@/lib/types';
 import { Logo } from '@/components/ui/logo';
@@ -64,11 +66,11 @@ export default function LandingPage() {
             <span className="text-blue-400">after closing.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-200">
-            I built After Closing Pro because I know what it feels like to close a home
-            and still get dragged back into every outlet, leak, door adjustment, and
-            &ldquo;is this warranty?&rdquo; text. Give homeowners one simple warranty link.
-            Our AI collects photos, asks the right follow-up questions, filters out
-            maintenance issues, routes real problems to the right trade, and documents everything.
+            Give every homeowner one simple warranty link. After Closing Pro&rsquo;s AI
+            collects photos, asks the right questions, and tells them what&rsquo;s actually
+            covered vs. normal maintenance &mdash; deflecting non-warranty calls before they
+            ever reach you. Real issues become clean tickets, routed to the right trade and
+            scheduled automatically.
           </p>
           <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
@@ -114,6 +116,43 @@ export default function LandingPage() {
               then turns messy requests into clean, documented tickets your team and trades
               can actually act on.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Key capabilities band */}
+      <section className="border-b border-gray-100 bg-white py-16">
+        <div className="mx-auto max-w-5xl px-4">
+          <h2 className="text-center text-2xl font-bold text-gray-900">
+            More than intake &mdash; it decides and schedules for you
+          </h2>
+          <p className="mt-2 text-center text-gray-600">
+            The two things that actually save builders hours every week.
+          </p>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <Scale className="h-7 w-7 text-blue-600" />
+              <h3 className="mt-3 text-lg font-semibold text-gray-900">
+                Covered vs. not &mdash; decided automatically
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                The AI checks every issue against your warranty terms and gently tells
+                homeowners when something is normal maintenance &mdash; stopping non-warranty
+                calls before they reach you. It never hard-denies, and you always make the
+                final call with one click.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <CalendarCheck className="h-7 w-7 text-blue-600" />
+              <h3 className="mt-3 text-lg font-semibold text-gray-900">
+                Scheduled without you in the middle
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                Assign a trade and the loop runs itself: the trade proposes times, the
+                homeowner confirms, and the ticket flips to Scheduled &mdash; with a 24-hour
+                reminder to both so nobody forgets. No phone tag, no chasing.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -213,7 +252,7 @@ export default function LandingPage() {
               </div>
               <h3 className="mt-4 text-base font-semibold text-gray-900">AI Triages the Issue</h3>
               <p className="mt-2 text-sm text-gray-600">
-                AI asks smart follow-up questions, suggests safe troubleshooting, and filters out simple issues before they hit your phone.
+                AI asks smart follow-up questions, suggests safe troubleshooting, and flags whether it&rsquo;s actually covered &mdash; filtering out maintenance before it hits your phone.
               </p>
             </div>
             <div className="text-center">
@@ -222,7 +261,7 @@ export default function LandingPage() {
               </div>
               <h3 className="mt-4 text-base font-semibold text-gray-900">You Get a Clean Ticket</h3>
               <p className="mt-2 text-sm text-gray-600">
-                Real issues become organized tickets with AI summaries, trade recommendations, and urgency ratings. Assign a trade in one click.
+                Real issues become organized tickets with AI summaries, trade recommendations, and urgency ratings. Assign a trade in one click &mdash; and scheduling runs itself from there.
               </p>
             </div>
           </div>
@@ -310,6 +349,16 @@ export default function LandingPage() {
           <h2 className="text-center text-2xl font-bold text-gray-900">Built for Builders</h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {[
+              {
+                icon: Scale,
+                title: 'Warranty Coverage Triage',
+                desc: 'AI checks each issue against your warranty terms and softly guides homeowners on maintenance items \u2014 deflecting non-warranty calls. You can override any call in one click.',
+              },
+              {
+                icon: CalendarCheck,
+                title: 'Hands-Off Scheduling',
+                desc: 'Trade proposes times, homeowner confirms, ticket flips to Scheduled \u2014 with 24-hour reminders to both. Reschedule, set a time, or cancel anytime.',
+              },
               {
                 icon: Bot,
                 title: 'AI Issue Triage',
