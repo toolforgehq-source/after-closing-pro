@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { tradeAssignmentEmail } from '@/lib/email';
+import { proposeUrl } from '@/lib/schedule';
 
 export async function POST(request: Request) {
   try {
@@ -12,6 +14,9 @@ export async function POST(request: Request) {
 
     const supabase = createServerSupabaseClient();
 
+    // Fresh scheduling round: new token invalidates any prior propose/confirm links
+    const scheduleToken = randomUUID();
+
     // Update the ticket
     const { error: updateError } = await supabase
       .from('tickets')
@@ -20,6 +25,12 @@ export async function POST(request: Request) {
         status: 'assigned_to_trade',
         assigned_by: assigned_by || null,
         assigned_at: new Date().toISOString(),
+        schedule_token: scheduleToken,
+        schedule_status: 'awaiting_trade',
+        proposed_slots: null,
+        scheduled_slot: null,
+        scheduled_at: null,
+        reminder_sent_at: null,
         updated_at: new Date().toISOString(),
       })
       .eq('id', ticket_id);
@@ -58,6 +69,7 @@ export async function POST(request: Request) {
           homeownerName: ticket.home?.homeowner_name || 'Homeowner',
           homeownerEmail: ticket.home?.homeowner_email || undefined,
           homeownerPhone: ticket.home?.homeowner_phone || undefined,
+          proposeUrl: proposeUrl(ticket_id, scheduleToken),
         });
       } catch (emailError) {
         console.error('Email send error:', emailError);

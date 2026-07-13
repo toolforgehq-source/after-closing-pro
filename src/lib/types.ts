@@ -127,6 +127,12 @@ export interface Ticket {
   coverage_override_at: string | null;
   ai_resolved: boolean;
   location: string | null;
+  schedule_token: string | null;
+  schedule_status: 'awaiting_trade' | 'proposed' | 'confirmed' | 'cancelled' | null;
+  proposed_slots: string[] | null;
+  scheduled_slot: string | null;
+  scheduled_at: string | null;
+  reminder_sent_at: string | null;
   assigned_by: string | null;
   assigned_at: string | null;
   completed_at: string | null;

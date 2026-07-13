@@ -21,6 +21,10 @@ import {
   ShieldCheck,
   ShieldX,
   ShieldQuestion,
+  CalendarClock,
+  CalendarCheck,
+  CalendarX,
+  RotateCcw,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { Ticket, TicketMessage, Trade, TicketStatus } from '@/lib/types';
@@ -31,6 +35,7 @@ import {
 } from '@/lib/types';
 import { effectiveCoverageVerdict } from '@/lib/warranty';
 import { formatDateTime, timeAgo } from '@/lib/utils';
+import { formatSlot } from '@/lib/schedule';
 
 export default function TicketDetailPage() {
   const params = useParams();
@@ -45,6 +50,9 @@ export default function TicketDetailPage() {
   const [selectedTradeId, setSelectedTradeId] = useState('');
   const [assigning, setAssigning] = useState(false);
   const [coverageUpdating, setCoverageUpdating] = useState(false);
+  const [scheduleBusy, setScheduleBusy] = useState(false);
+  const [manualTime, setManualTime] = useState('');
+  const [scheduleError, setScheduleError] = useState('');
 
   useEffect(() => {
     loadTicketData();
@@ -126,6 +134,9 @@ export default function TicketDetailPage() {
         trade_id: selectedTradeId,
         status: 'assigned_to_trade',
         trade: data.trade as Trade,
+        schedule_status: 'awaiting_trade',
+        proposed_slots: null,
+        scheduled_slot: null,
       });
       setSelectedTradeId('');
     }
@@ -147,6 +158,29 @@ export default function TicketDetailPage() {
       .eq('id', ticket.id);
     setTicket({ ...ticket, coverage_override: decision, coverage_override_at: overrideAt });
     setCoverageUpdating(false);
+  }
+
+  async function handleScheduleAction(action: 'reschedule' | 'cancel' | 'set_time', slot?: string) {
+    if (!ticket) return;
+    setScheduleBusy(true);
+    setScheduleError('');
+    try {
+      const res = await fetch('/api/schedule/manage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ticket_id: ticket.id, action, slot }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setScheduleError(data.error || 'Something went wrong.');
+      } else {
+        setManualTime('');
+        await loadTicketData();
+      }
+    } catch {
+      setScheduleError('Network error. Please try again.');
+    }
+    setScheduleBusy(false);
   }
 
   async function handleSendMessage() {
@@ -519,6 +553,98 @@ export default function TicketDetailPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Scheduling */}
+          {ticket.trade_id && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <CalendarClock className="h-4 w-4 text-gray-500" />
+                  <h2 className="text-sm font-semibold text-gray-900">Scheduling</h2>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {ticket.schedule_status === 'confirmed' && ticket.scheduled_slot ? (
+                  <div className="rounded-lg bg-emerald-50 p-3">
+                    <div className="flex items-center gap-2">
+                      <CalendarCheck className="h-4 w-4 text-emerald-600" />
+                      <span className="text-sm font-semibold text-emerald-800">Confirmed</span>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-900">{formatSlot(ticket.scheduled_slot)}</p>
+                    <p className="text-xs text-gray-500">with {ticket.trade?.name}</p>
+                  </div>
+                ) : ticket.schedule_status === 'proposed' && ticket.proposed_slots?.length ? (
+                  <div className="rounded-lg bg-cyan-50 p-3">
+                    <p className="text-sm font-medium text-cyan-800">Waiting on homeowner to confirm</p>
+                    <p className="mt-1 text-xs text-gray-500">Proposed times:</p>
+                    <ul className="mt-1 space-y-0.5">
+                      {ticket.proposed_slots.map((s) => (
+                        <li key={s} className="text-xs text-gray-700">&bull; {formatSlot(s)}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : ticket.schedule_status === 'awaiting_trade' ? (
+                  <div className="rounded-lg bg-gray-50 p-3">
+                    <p className="text-sm text-gray-700">Waiting for {ticket.trade?.name} to propose times.</p>
+                  </div>
+                ) : ticket.schedule_status === 'cancelled' ? (
+                  <div className="rounded-lg bg-red-50 p-3">
+                    <p className="text-sm text-red-700">Appointment cancelled.</p>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">Not scheduled yet.</p>
+                )}
+
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Set a time manually</label>
+                  <input
+                    type="datetime-local"
+                    value={manualTime}
+                    onChange={(e) => setManualTime(e.target.value)}
+                    className="mt-1 flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                  <Button
+                    onClick={() => handleScheduleAction('set_time', new Date(manualTime).toISOString())}
+                    loading={scheduleBusy}
+                    disabled={!manualTime}
+                    size="sm"
+                    variant="outline"
+                    className="mt-2 w-full"
+                  >
+                    <CalendarCheck className="mr-2 h-3.5 w-3.5" />
+                    Set &amp; Notify
+                  </Button>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleScheduleAction('reschedule')}
+                    loading={scheduleBusy}
+                    size="sm"
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
+                    Ask for times
+                  </Button>
+                  {(ticket.schedule_status === 'confirmed' || ticket.schedule_status === 'proposed') && (
+                    <Button
+                      onClick={() => handleScheduleAction('cancel')}
+                      loading={scheduleBusy}
+                      size="sm"
+                      variant="danger"
+                      className="flex-1"
+                    >
+                      <CalendarX className="mr-1.5 h-3.5 w-3.5" />
+                      Cancel
+                    </Button>
+                  )}
+                </div>
+
+                {scheduleError && <p className="text-sm text-red-600">{scheduleError}</p>}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Quick actions */}
           <Card>
