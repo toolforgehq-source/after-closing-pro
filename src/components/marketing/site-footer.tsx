@@ -5,6 +5,7 @@ const footerLinks = [
   { href: '/features', label: 'Features' },
   { href: '/how-it-works', label: 'How It Works' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/compare', label: 'Compare' },
   { href: '/faq', label: 'FAQ' },
   { href: '/why', label: 'Why I Built This' },
   { href: '/terms', label: 'Terms' },
