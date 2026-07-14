@@ -13,10 +13,24 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const c = getComparison(params.slug);
   if (!c) return {};
+  const url = `/compare/${c.slug}`;
   return {
     title: c.metaTitle,
     description: c.metaDescription,
-    alternates: { canonical: `/compare/${c.slug}` },
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: c.metaTitle,
+      description: c.metaDescription,
+      images: [{ url: '/og/compare.png', width: 1200, height: 630, alt: c.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: c.metaTitle,
+      description: c.metaDescription,
+      images: ['/og/compare.png'],
+    },
   };
 }
 
