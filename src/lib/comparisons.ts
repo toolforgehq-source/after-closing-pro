@@ -172,6 +172,151 @@ export const comparisons: Comparison[] = [
       reviewed: 'Reviewed June 30, 2026',
     },
   },
+  {
+    slug: 'warrantyhub',
+    competitor: 'WarrantyHub',
+    title: 'After Closing Pro vs WarrantyHub',
+    metaTitle: 'After Closing Pro vs WarrantyHub — Homebuilder Warranty Compared',
+    metaDescription:
+      'An honest comparison of After Closing Pro and WarrantyHub for residential warranty management: AI triage, coverage guidance, trade dispatch, intake channels, pricing, and which type of builder each fits best.',
+    summary:
+      'WarrantyHub is a purpose-built residential warranty platform with a self-service homeowner portal and SMS trade dispatch; After Closing Pro is a focused AI warranty tool with coverage guidance and transparent pricing.',
+    intro:
+      'WarrantyHub and After Closing Pro are both purpose-built for post-closing residential warranty — this is a close, direct comparison. WarrantyHub emphasizes a self-service homeowner portal, automated trade dispatch, and multi-community claim tracking across a broader warranty platform. After Closing Pro emphasizes AI issue triage, coverage guidance, and an automated trade-scheduling loop, with transparent published pricing. Here is an honest side-by-side based on WarrantyHub’s official homebuilder page.',
+    competitorOverview:
+      'Per WarrantyHub’s official homebuilder page, it is purpose-built residential warranty management software that covers the full post-construction warranty lifecycle: homeowner claim submission, trade coordination and dispatch (it shows trades assigned via SMS), work-order management, and resolution tracking, with branded homeowner self-service portals and real-time tracking across multiple communities. WarrantyHub is offered by Bid Box Pro, Inc. as part of a broader warranty platform that also serves home-warranty companies, manufacturers, automotive/TPAs, and others, and it advertises claims management, analytics, a customer portal, warranty tracking, registration, and policy management.',
+    rows: [
+      {
+        feature: 'Product focus',
+        acp: 'Post-closing warranty for small-to-mid-sized builders',
+        competitor: 'Residential warranty within a broader multi-industry warranty platform',
+      },
+      {
+        feature: 'AI issue triage',
+        acp: 'Yes — AI asks follow-ups, suggests safe troubleshooting, classifies, rates urgency',
+        competitor: 'Not advertised as AI triage on the homebuilder page',
+      },
+      {
+        feature: 'Warranty coverage guidance',
+        acp: 'Yes — soft guidance on maintenance vs. likely-covered, builder can override',
+        competitor: 'Not advertised on the homebuilder page',
+      },
+      {
+        feature: 'Trade scheduling / dispatch',
+        acp: 'Automated loop: trade proposes times → homeowner confirms → 24-hour reminders',
+        competitor: 'Automated trade coordination and dispatch (shown assigning trades via SMS)',
+      },
+      {
+        feature: 'Homeowner submission',
+        acp: 'One link, no login; photo intake',
+        competitor: 'Branded homeowner self-service portal for claim submission',
+      },
+      {
+        feature: 'Intake channels',
+        acp: 'Online link + email (no SMS/texting)',
+        competitor: 'Self-service portal with SMS notifications to trades',
+      },
+      {
+        feature: 'Analytics / reporting',
+        acp: 'Ticket timeline and status; no analytics dashboard published today',
+        competitor: 'Yes — warranty analytics is an advertised feature',
+      },
+      {
+        feature: 'Multi-community scale',
+        acp: 'Built for small-to-mid-sized builders',
+        competitor: 'Real-time tracking across multiple communities; states $1B+ contracts managed',
+      },
+      {
+        feature: 'Pricing transparency',
+        acp: 'Public self-serve pricing ($199 / $399 / $799 per month)',
+        competitor: 'Three named tiers (Essentials, Professional, Enterprise) with free trial; dollar amounts not published (start trial or contact sales)',
+      },
+    ],
+    bestForAcp:
+      'Small-to-mid-sized builders who want AI-assisted triage and coverage guidance, an automated trade-scheduling loop, and transparent published monthly pricing they can sign up for themselves — without needing a multi-community analytics platform.',
+    bestForCompetitor:
+      'Builders who want a branded self-service homeowner portal, SMS-based trade dispatch, warranty analytics, and real-time tracking across many communities — or organizations that also run warranty operations beyond homebuilding (manufacturers, TPAs) on one platform.',
+    competitorStrengths: [
+      'Branded homeowner self-service portal and SMS trade dispatch, which After Closing Pro does not offer (email only).',
+      'Advertised warranty analytics and real-time tracking across multiple communities for larger, multi-community builders.',
+      'An established platform (states $1B+ in contracts managed) spanning multiple warranty industries beyond homebuilding.',
+    ],
+    source: {
+      label: 'WarrantyHub — Homebuilder Warranty Software (official page)',
+      url: 'https://warrantyhub.com/homebuilder-warranty-software/',
+      reviewed: 'Reviewed June 30, 2026',
+    },
+  },
+  {
+    slug: 'digscare',
+    competitor: 'DigsCare',
+    title: 'After Closing Pro vs DigsCare',
+    metaTitle: 'After Closing Pro vs DigsCare (Digs) — Warranty Software Compared',
+    metaDescription:
+      'An honest comparison of After Closing Pro and DigsCare by Digs: AI warranty triage, coverage guidance, trade scheduling, punch-list walkthroughs, pricing, and which type of builder each fits best.',
+    summary:
+      'DigsCare is the post-handoff/warranty add-on to Digs, a pre-construction and document-collaboration suite with floorplan-pinned punch lists; After Closing Pro is a standalone AI warranty tool with triage, coverage guidance, and automated scheduling.',
+    intro:
+      'DigsCare (by Digs) and After Closing Pro both handle post-closing homeowner warranty, but they come at it from different directions. DigsCare is an add-on to Digs, a broader pre-construction and document-collaboration platform, and leans on visual, floorplan-pinned punch lists and homeowner handoff. After Closing Pro is a standalone AI warranty tool centered on issue triage, coverage guidance, and an automated trade-scheduling loop. Here is an honest side-by-side based on the official DigsCare and Digs pricing pages.',
+    competitorOverview:
+      'Per the official DigsCare page, DigsCare helps builders “continue to wow after the build,” covering homeowner handoff, warranty management, and life-long ownership. It supports walkthroughs and punch lists where blue-tape items are pinned directly to a digital floorplan, comments and photo uploads, and task assignment with completion tracking, and it manages homeowner warranty tickets from start to finish. DigsCare is an add-on to Digs (Digs Inc.), whose broader product covers pre-construction collaboration, 2D/3D floorplans, file management with digital signatures, and an “AskDigs” AI chat for finding documents. Per the Digs pricing page, DigsPro is $59/month (billed annually) with DigsCare offered as a +$17/month add-on, and Digs Enterprise (custom integrations, analytics including warranty metrics) is contact-sales.',
+    rows: [
+      {
+        feature: 'Product focus',
+        acp: 'Standalone post-closing AI warranty tool',
+        competitor: 'Warranty/handoff add-on to a pre-construction & document-collaboration suite',
+      },
+      {
+        feature: 'AI issue triage',
+        acp: 'Yes — AI asks follow-ups, suggests safe troubleshooting, classifies, rates urgency',
+        competitor: 'Not advertised for warranty; Digs offers an “AskDigs” AI chat for finding documents',
+      },
+      {
+        feature: 'Warranty coverage guidance',
+        acp: 'Yes — soft guidance on maintenance vs. likely-covered, builder can override',
+        competitor: 'Not advertised on the DigsCare page',
+      },
+      {
+        feature: 'Trade scheduling',
+        acp: 'Automated loop: trade proposes times → homeowner confirms → 24-hour reminders',
+        competitor: 'Task assignment and completion tracking; automated scheduling loop not described',
+      },
+      {
+        feature: 'Punch list / walkthroughs',
+        acp: 'Not a separate feature — focused on post-closing warranty tickets',
+        competitor: 'Yes — blue-tape items pinned to a digital floorplan at move-in and one-year check-ins',
+      },
+      {
+        feature: 'Homeowner submission',
+        acp: 'One link, no login; photo intake',
+        competitor: 'Homeowner handoff and warranty tickets with comments and photo uploads',
+      },
+      {
+        feature: 'Document storage',
+        acp: 'Ticket timeline with attached photos; not a document vault',
+        competitor: 'Yes — file management with unlimited storage and homeowner handoff docs',
+      },
+      {
+        feature: 'Pricing transparency',
+        acp: 'Public self-serve pricing ($199 / $399 / $799 per month)',
+        competitor: 'Public pricing: DigsPro $59/mo (billed annually) + DigsCare add-on $17/mo; Enterprise contact-sales',
+      },
+    ],
+    bestForAcp:
+      'Small-to-mid-sized builders who specifically want AI warranty triage, coverage guidance, and an automated trade-scheduling loop as a standalone tool — without adopting a broader pre-construction/document platform.',
+    bestForCompetitor:
+      'Builders who want warranty handled inside a broader Digs workflow — visual punch-list walkthroughs pinned to floorplans, document collaboration and homeowner handoff, and a lower entry price — especially if they already use Digs for pre-construction.',
+    competitorStrengths: [
+      'Visual punch-list walkthroughs with items pinned directly to a digital floorplan, which After Closing Pro does not offer.',
+      'Part of a broader suite (document management, 2D/3D floorplans, homeowner handoff) with a lower published entry price.',
+      'Homeowner handoff and document storage for life-long ownership, beyond warranty tickets alone.',
+    ],
+    source: {
+      label: 'DigsCare by Digs — official product & pricing pages',
+      url: 'https://digs.com/digscare',
+      reviewed: 'Reviewed June 30, 2026',
+    },
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {
