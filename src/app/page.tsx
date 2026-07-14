@@ -39,6 +39,12 @@ export default function LandingPage() {
               Pricing
             </Link>
             <Link
+              href="/compare"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 md:inline-block"
+            >
+              Compare
+            </Link>
+            <Link
               href="/faq"
               className="hidden rounded-lg px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:inline-block"
             >
@@ -511,6 +517,9 @@ export default function LandingPage() {
               </Link>
               <Link href="/pricing" className="text-sm text-gray-500 hover:text-gray-700">
                 Pricing
+              </Link>
+              <Link href="/compare" className="text-sm text-gray-500 hover:text-gray-700">
+                Compare
               </Link>
               <Link href="/faq" className="text-sm text-gray-500 hover:text-gray-700">
                 FAQ

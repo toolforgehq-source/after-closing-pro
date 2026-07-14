@@ -5,11 +5,27 @@ import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { comparisons } from '@/lib/comparisons';
 
+const hubTitle = 'Compare — After Closing Pro vs Other Warranty Software';
+const hubDescription =
+  'Honest, sourced comparisons of After Closing Pro against other homebuilder warranty software — Buildertrend, AvidWarranty by ECI, WarrantyHub, and DigsCare — with a clear read on which type of builder each fits best.';
+
 export const metadata: Metadata = {
-  title: 'Compare — After Closing Pro vs Other Warranty Software',
-  description:
-    'Honest, sourced comparisons of After Closing Pro against other homebuilder warranty software — Buildertrend, AvidWarranty by ECI, WarrantyHub, and DigsCare — with a clear read on which type of builder each fits best.',
+  title: hubTitle,
+  description: hubDescription,
   alternates: { canonical: '/compare' },
+  openGraph: {
+    type: 'website',
+    url: '/compare',
+    title: hubTitle,
+    description: hubDescription,
+    images: [{ url: '/og/compare.png', width: 1200, height: 630, alt: hubTitle }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: hubTitle,
+    description: hubDescription,
+    images: ['/og/compare.png'],
+  },
 };
 
 export default function ComparePage() {
