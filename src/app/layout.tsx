@@ -52,6 +52,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: 'uKofukPR747a70qBPv0zNLgsWzlHTDDbdgPIvwC41Rw',
+  },
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
