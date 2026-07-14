@@ -41,6 +41,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.afterclosingpro.com/compare/warrantyhub</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.afterclosingpro.com/compare/digscare</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.afterclosingpro.com/why</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

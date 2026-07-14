@@ -8,7 +8,7 @@ import { comparisons } from '@/lib/comparisons';
 export const metadata: Metadata = {
   title: 'Compare — After Closing Pro vs Other Warranty Software',
   description:
-    'Honest, sourced comparisons of After Closing Pro against other homebuilder warranty software, including Buildertrend and AvidWarranty by ECI — with a clear read on which type of builder each fits best.',
+    'Honest, sourced comparisons of After Closing Pro against other homebuilder warranty software — Buildertrend, AvidWarranty by ECI, WarrantyHub, and DigsCare — with a clear read on which type of builder each fits best.',
   alternates: { canonical: '/compare' },
 };
 
